@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\sitecontroller;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,7 +34,7 @@ route::controller(CategoryController::class)->middleware("auth")->group(function
     Route::get("/admin/category/edit/{id}","edit");
     Route::post("/admin/category/update","update");
 });
-route::controller(ArticleController::class)->middleware("auth")->group(function(){
+route::controller(ArticleController::class)->group(function(){
 route::get("articles","index");
 route::get("articles/create","create");
 route::post("article/store","store");
@@ -41,4 +42,11 @@ route::get("article/edit/{id}","edit");
 route::post("article/update","update");
 route::get("article/delete/{id}","destroy");
 });
+######################## the site   the front end 
+Route::controller(sitecontroller::class)->group(function (){
 
+    route::get("site","index");
+    route::get("blog/{id}","blog_details");
+    route::get("category/{id}","category");
+    route::get("comment","comment");
+});

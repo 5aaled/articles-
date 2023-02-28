@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\article;
+use App\Models\category;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -17,13 +19,16 @@ class ArticleController extends Controller
         $articles = article::all();
         return view("admin.articles.index",compact("articles"));
     }
-
+    
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view("admin.articles.create");
+        $categories = category::all();
+        $users = User::all();
+        
+        return view("admin.articles.create",compact(["categories","users"]));
     }
 
     /**
@@ -31,7 +36,19 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-          article::create($request->all());
+        $cover = $request->file("cover");
+        $covername = $cover->getClientOriginalName();
+        $cover->move("uploads",$covername);  #store the data at the sever 
+
+          article::create([
+            "title" =>$request->title,
+            "short_description" => $request->short_description,
+            "content" =>$request->content,
+            "cover" => $covername,
+            "category_id" =>$request->categories,
+            "user_id" =>$request->users
+
+          ]);
         return redirect("articles");
     }
 

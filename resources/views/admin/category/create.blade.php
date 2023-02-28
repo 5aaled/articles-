@@ -1,5 +1,5 @@
 @extends('layout')
-@section("title","create page")
+@section("title","create category ")
 @section('body-content')
     <form action="{{url('admin/category/store')}}" method="post">
         @csrf
